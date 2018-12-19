@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>Floor List</title>
+{% endblock %}
+
+{% block content %}
+    {% if floor_list %}
+        <br><br>
+        <div class="aa-main-div container img-rounded text-center" style="padding: 3%">
+            <a href="/admin/"><h2 style="float: left"><i class="fa fa-arrow-left"></i></h2></a>
+            <h4 class="alert alert-info text-center" style="font-weight: bolder;width: 30%;margin: auto">FLOORS</h4>
+            <br><br>
+{#            <div style="display: flex; justify-content: space-between;font-weight: bold!important;">#}
+                {% for floor in floor_list %}
+                    <a href="{% url "portal:display_screen" floor_id=floor.id %}"><button class="btn btn-primary btn-lg" style="width: 200px;">{{ floor.Name }}</button></a>
+                    <br><br>
+                {% endfor %}
+{#            </div>#}
+        </div>
+    {% endif %}
+{% endblock %}

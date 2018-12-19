@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <br>
+    <div class="ss-slideshow-container">
+
+        <div class="ss-mySlide">
+            <div class="container text-center aa-main-div">
+                <div style="display: flex; justify-content: space-between;font-weight: bold!important;">
+                    <h5 class="alert alert-info aa-small-block"><b>Shift Leader : {{ floor.Shift_Leader }}</b></h5>
+                    <h4 class="alert alert-info aa-small-block" ><b><a href="/admin/">{{ floor.Name }}</a></b></h4>
+                    <h5 class="alert alert-info aa-small-block"><b>Date: <span id="date"></span></b></h5>
+                </div>
+
+                {% if floor.Name == 'Floor 2' %}
+                        <table class="table table-bordered " style="background-color:rgba(0 0 0 0);font-weight: bold">
+
+                            {% for division in floor.division_set.all %}
+                                    <tr class="active">
+
+                                        <td colspan="4">
+                                            <span style="font-weight: bolder">DIVISION : {{ division.Name }}</span>
+                                            <span style="float:right"> {{division.Display_Name}} | 1 : {{division.Doctor1}} | 2 : {{division.Doctor2}}<span>
+
+                                        </td>
+
+                                    </tr>
+                                     <tr class="info">
+                                            <td>Room</td>
+                                            <td>Patient</td>
+                                            <td>Doctor Attending</td>
+                                            <td>Nurse Attending</td>
+                                     </tr>
+                                    {% for patient in division.active_patients %}
+                                        <tr>
+                                            <td>{{ patient.Room }}</td>
+                                            <td>{{ patient.Name }}</td>
+                                            <td>{{ patient.Doctor_Attending }}</td>
+                                            <td>{{ patient.Nurse_Attending }}</td>
+                                        </tr>
+                                    {% endfor %}
+                            {% endfor %}
+                        </table>
+                {% else %}
+
+                        <table class="table table-bordered " style="background-color:rgba(0 0 0 0);font-weight: bold">
+                            <tr class="info">
+                                <td>Room</td>
+                                <td>Patient</td>
+                                <td>Doctor Attending</td>
+                                <td>Nurse Attending</td>
+                            </tr>
+                            {% for patient in patients %}
+                                <tr>
+                                    <td>{{ patient.Room }}</td>
+                                    <td>{{ patient.Name }}</td>
+                                    <td>{{ patient.Doctor_Attending }}</td>
+                                    <td>{{ patient.Nurse_Attending }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                {% endif %}
+
+            </div>
+        </div>
+
+        <div class="ss-mySlide">
+
+            <div style="font-size: 20px" class=" aa-main-div container img-rounded text_center aa-vision-div">
+                <p ><span style="font-weight: bolder;">VISION : </span>{{ hospital.Vision }}</p>
+                <br>
+                <p><span style="font-weight: bolder">MISSION : </span>{{ hospital.Mission }}</p>
+            </div>
+        </div>
+
+        <div class="ss-mySlide">
+            <div style="font-size: 20px" class=" aa-main-div container img-rounded text_center aa-vision-div">
+                <p><span style="font-weight: bolder">ADDRESS : </span>{{ hospital.Address }}</p>
+                <br>
+                <p><span style="font-weight: bolder">LOCATION : </span>{{ hospital.Location }}</p>
+            </div>
+        </div>
+
+        <div class="ss-mySlide">
+        </div>
+
+
+    </div>
+
+    <div style="text-align:center;display:none;">
+      <span id = "chart" class="ss-dot"></span>
+      <span id = "vision" class="ss-dot"></span>
+      <span id= "addressDetails" class="ss-dot"></span>
+        <span id= "hospitalLogo" class="ss-dot"></span>
+    </div>
+
+
+     <script>
+            n =  new Date();
+            y = n.getFullYear();
+            m = n.getMonth() + 1;
+            d = n.getDate();
+            document.getElementById("date").innerHTML = m + "/" + d + "/" + y;
+
+
+            var slideIndex = 0;
+            var tt = 2000;
+            showSlides();
+
+            function showSlides() {
+                var i;
+                var slides = document.getElementsByClassName("ss-mySlide");
+                var dots = document.getElementsByClassName("ss-dot");
+                for (i = 0; i < slides.length; i++) {
+                   slides[i].style.display = "none";
+                }
+                slideIndex++;
+                if (slideIndex > slides.length) {slideIndex = 1}
+                for (i = 0; i < dots.length; i++) {
+                    dots[i].className = dots[i].className.replace(" active", "");
+                }
+                slides[slideIndex-1].style.display = "block";
+                dots[slideIndex-1].className += " active";
+                if (dots[slideIndex-1].id == "chart"){tt = 60000}
+                else if (dots[slideIndex-1].id == "vision"){tt = 10000}
+                else if (dots[slideIndex-1].id == "addressDetails"){tt = 10000}
+                else if (dots[slideIndex-1].id == "hospitalLogo"){tt = 10000}
+                setTimeout(showSlides, tt);
+            }
+
+     </script>
+{% endblock %}
+
